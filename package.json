@@ -79,11 +79,11 @@
     "gulp-eslint": "^1.1.1",
     "gulp-mocha": "^2.2.0",
     "gulp-plumber": "^1.0.1",
-    "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
     "json-loader": "^0.5.4",
     "mocha": "^2.3.4",
     "react": "^0.14.3",
+    "react-dom": "^0.14.3",
     "rimraf": "^2.4.4",
     "run-sequence": "^1.1.5",
     "should": "^8.0.1",
@@ -92,6 +92,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.3.14",
+    "babel-runtime": "^6.3.19",
     "bluebird": "^3.0.6",
     "cheerio": "^0.19.0",
     "lodash": "^3.10.1"

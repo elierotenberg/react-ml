@@ -20,9 +20,10 @@ function sync(cb) {
 }
 
 function createTest(platform, env) {
+  const tests = path.join(dist, platform, env, '**', '__tests__', '**', '*.js');
   return (cb) => {
-    gulp.src(path.join(dist, platform, env, '**', '__tests__', '**', '*.js'), { read: false })
-      .pipe(mocha({ reporter: 'spec' }))
+    gulp.src(tests, { read: false })
+      .pipe(mocha())
       .pipe(sync(cb));
   };
 }
