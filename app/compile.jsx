@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import cheerio from 'cheerio';
 import React from 'react';
-import ReactML from './ReactML';
 
 const CHEERIO = {
   TEXT: 'text',
@@ -9,10 +8,10 @@ const CHEERIO = {
   ROOT: 'root',
 };
 
-function transform(node, elements) {
+function transform(node, components) {
   if(Array.isArray(node)) {
     return _(node)
-      .map((child) => transform(child, elements))
+      .map((child) => transform(child, components))
       .map((child, key) => {
         if(React.isValidElement(child)) {
           return React.cloneElement(child, { key });
@@ -26,20 +25,18 @@ function transform(node, elements) {
     return data;
   }
   if(type === CHEERIO.TAG) {
-    if(!_.has(elements, name)) {
+    if(!_.has(components, name)) {
       return null;
     }
-    return elements[name](attribs, transform(children, elements));
+    return components[name](attribs, transform(children, components));
   }
   if(type === CHEERIO.ROOT) {
-    return <ReactML>
-      {transform(children, elements)}
-    </ReactML>;
+    return transform(children, components);
   }
   throw new TypeError(`Invalid node: ${node.toString()}`);
 }
 
-function compile(source, elements) {
+function compile(source, components) {
   const rootNode = cheerio(source, {
     xmlMode: false,
     decodeEntities: true,
@@ -48,7 +45,7 @@ function compile(source, elements) {
     recognizeCDATA: false,
     recognizeSelfClosing: true,
   }).root().get(0);
-  return transform(rootNode, elements);
+  return transform(rootNode, components);
 }
 
 export default compile;
