@@ -1,8 +1,7 @@
 import should from 'should/as-function';
-const { describe, it } = global;
-
 import index from '../';
 import ComplexClass from './fixtures/ComplexClass';
+const { describe, it } = global;
 
 describe('sanity', () => {
   it('shouldjs should not extend Object.prototype', () => should(Object.prototype).not.have.property('should'));

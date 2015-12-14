@@ -13,11 +13,12 @@ import webpackNodeDev from '../webpack/node-dev';
 import webpackNodeProd from '../webpack/node-prod';
 
 const exts = ['js', 'jsx'];
-const src = 'src';
+const root = path.join(__dirname, '..', '..');
+const src = path.join(root, 'src');
 const sources = exts.map((ext) => path.join(src, '**', `*.${ext}`));
-const dist = 'dist';
+const dist = path.join(root, 'dist');
 const __tests__ = '__tests__';
-const tests = exts.map((ext) => path.join(src, __tests__, '**', `*.${ext}`));
+const tests = exts.map((ext) => path.join(src, '**', __tests__, '**', `*.${ext}`));
 
 gulp.task('clean', (done) =>
   rimraf(dist, done)
