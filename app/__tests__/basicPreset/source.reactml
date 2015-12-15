@@ -1,4 +1,4 @@
 <b>Hello</b>
 <i>World</i>
-<url>github.com</url>
-<img source='https://news.ycombinator.com/y18.gif'>HN</img>
+<link>github.com</link>
+<image url='https://news.ycombinator.com/y18.gif'>HN</image>

@@ -7,7 +7,9 @@ class ReactMLFragment extends React.Component {
   };
 
   render() {
-    return this.props.children;
+    return <div className='reactml-fragment'>
+      {this.props.children}
+    </div>;
   }
 }
 

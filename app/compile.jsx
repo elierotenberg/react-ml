@@ -3,11 +3,26 @@ import _ from 'lodash';
 import cheerio from 'cheerio';
 import React from 'react';
 import ReactMLFragment from './ReactMLFragment';
+import ReactMLParagraph from './ReactMLParagraph';
 
 const CHEERIO = {
   TEXT: 'text',
   TAG: 'tag',
   ROOT: 'root',
+};
+
+const defaultComponents = {
+  ReactMLFragment(attribs, children, boundTransformChildren) {
+    return <ReactMLFragment>
+      {boundTransformChildren(children)}
+    </ReactMLFragment>;
+  },
+
+  ReactMLParagraph(attribs, children, boundTransformChildren) {
+    return <ReactMLParagraph>
+      {boundTransformChildren(children)}
+    </ReactMLParagraph>;
+  },
 };
 
 function transformChildren(transformFn, children, components) {
@@ -22,22 +37,22 @@ function transformChildren(transformFn, children, components) {
   ;
 }
 
-function transform(node, components) {
+function transformNode(node, components) {
   const { type, name, data, attribs, children } = node;
   if(type === CHEERIO.ROOT) {
-    return React.createElement(ReactMLFragment, {
-      children: transformChildren(transform, children, components),
-    });
+    return <ReactMLFragment>
+      {transformChildren(transformNode, children, components)}
+    </ReactMLFragment>;
   }
   if(type === CHEERIO.TAG) {
-    const boundTransformChildren = (nextChildren) => transformChildren(transform, nextChildren, components);
+    const boundTransformChildren = (nextChildren) => transformChildren(transformNode, nextChildren, components);
     if(typeof components === 'function') {
-      return components(name, attribs, children, boundTransformChildren);
+      return components(name, attribs, children, boundTransformChildren, node);
     }
     if(!_.has(components, name)) {
       return null;
     }
-    return components[name](attribs, children, boundTransformChildren);
+    return components[name](attribs, children, boundTransformChildren, node);
   }
   if(type === CHEERIO.TEXT && typeof data === 'string') {
     return data;
@@ -45,32 +60,30 @@ function transform(node, components) {
   throw new TypeError(`Invalid node: ${node.toString()}`);
 }
 
-function wrapLines(source, tag) {
+function wrapParagraphs(source) {
   return source.split('\n').map((line) => {
     if(line.length > 0) {
-      return `<${tag}>${line}</${tag}>`;
+      return `<ReactMLParagraph>${line}</ReactMLParagraph>`;
     }
     return '';
   }).join('');
 }
 
-function prepare(source) {
-  return wrapLines(source, 'p');
+function wrapFragment(source) {
+  return wrapParagraphs(source, 'ReactMLParagraph');
 }
 
 function compile(source, components) {
-  const preparedSource = prepare(source);
-  const rootNode = cheerio.load(preparedSource, {
-    xmlMode: false,
+  const fragmentSource = wrapFragment(source);
+  const rootNode = cheerio.load(fragmentSource, {
+    xmlMode: true,
     decodeEntities: true,
     lowerCaseTags: false,
     lowerCaseAttributeNames: false,
     recognizeCDATA: false,
     recognizeSelfClosing: true,
   }).root().get(0);
-  return transform(rootNode, Object.assign({}, components, {
-    'p': (attribs, children) => <p>{children}</p>,
-  }));
+  return transformNode(rootNode, Object.assign({}, components, defaultComponents));
 }
 
 export default compile;

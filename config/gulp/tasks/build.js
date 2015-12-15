@@ -47,7 +47,7 @@ export default () => {
     gulp.task(buildPlatformTaskName, Object.keys(babelConfig[platform]).map((env) => {
       const buildEnvTaskName = `build-${platform}-${env}`;
       const copyEnvTaskName = `copy-${platform}-${env}`;
-      gulp.task(copyEnvTaskName, ['clean'], createCopy(platform, env));
+      gulp.task(copyEnvTaskName, [`clean-${platform}-${env}`], createCopy(platform, env));
       gulp.task(buildEnvTaskName, [copyEnvTaskName, 'lint'], createBuild(platform, env));
       return buildEnvTaskName;
     }));

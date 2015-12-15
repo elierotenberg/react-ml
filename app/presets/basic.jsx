@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-key */
+import _ from 'lodash';
 import React from 'react';
 
 function basicHtmlWrapper(tagName, className, style) {
@@ -13,44 +14,35 @@ export default {
   'u': basicHtmlWrapper('span', 'reactml-b', { textDecoration: 'underline' }),
   's': basicHtmlWrapper('span', 'reactml-s', { textDecoration: 'line-through' }),
   'link': ({ url }, children, transformChildren) => {
-    if(typeof target === 'string') {
-      return React.createElement('a', {
-        className: 'reactml-url',
-        href: url,
-        children: transformChildren(children),
-      });
+    if(typeof url === 'string') {
+      return <a className='reactml-link' href={url}>
+        {transformChildren(children)}
+      </a>;
     }
     if(children.length === 0) {
       return null;
     }
     const [{ type, data }] = children;
     if(type === 'text') {
-      return React.createElement('a', {
-        className: 'reactml-url',
-        href: data,
-        children: data,
-      });
+      return <a className='reactml-link' href={data}>
+        {data}
+      </a>;
     }
     return null;
   },
   'image': ({ url }, children) => {
-    if(typeof url === 'string' && typeof children === 'string') {
-      return React.createElement('img', {
-        alt: children,
-        className: 'reactml-img',
-        src: url,
-      });
+    if(typeof url === 'string') {
+      if(_.every(children, ({ type }) => type === 'text')) {
+        return <img alt={children.map(({ data }) => data).join('')} className='reactml-image' src={url} />;
+      }
+      return <img alt={url} className='reactml-image' src={url} />;
     }
     if(children.length === 0) {
       return null;
     }
     const [{ type, data }] = children;
     if(type === 'text') {
-      return React.createElement('img', {
-        alt: data,
-        className: 'reactml-img',
-        src: data,
-      });
+      return <img alt={data} className='reactml-image' src={data} />;
     }
     return null;
   },

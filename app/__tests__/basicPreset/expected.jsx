@@ -1,16 +1,18 @@
 import React from 'react';
+import ReactMLFragment from '../../ReactMLFragment';
+import ReactMLParagraph from '../../ReactMLParagraph';
 
-export default (<div>
-  <p>
+export default (<ReactMLFragment>
+  <ReactMLParagraph>
     <span className='reactml-b' style={{ fontWeight: 'bold' }}>{'Hello'}</span>
-  </p>
-  <p>
+  </ReactMLParagraph>
+  <ReactMLParagraph>
     <span className='reactml-i' style={{ fontStyle: 'italic' }}>{'World'}</span>
-  </p>
-  <p>
-    <a className='reactml-url' href='github.com'>{'github.com'}</a>
-  </p>
-  <p>
-    <img alt='HN' src={'https://news.ycombinator.com/y18.gif'} />
-  </p>
-</div>);
+  </ReactMLParagraph>
+  <ReactMLParagraph>
+    <a className='reactml-link' href='github.com'>{'github.com'}</a>
+  </ReactMLParagraph>
+  <ReactMLParagraph>
+    <img alt='HN' className='reactml-image' src={'https://news.ycombinator.com/y18.gif'} />
+  </ReactMLParagraph>
+</ReactMLFragment>);

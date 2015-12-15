@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactMLFragment from '../../ReactMLFragment';
+import ReactMLParagraph from '../../ReactMLParagraph';
 
 export default (<ReactMLFragment>
-  <h1>{'Title'}</h1>
-  <div>{'Content'}</div>
+  <ReactMLParagraph>
+    <h1>{'Title'}</h1>
+    <div>{'Content'}</div>
+  </ReactMLParagraph>
 </ReactMLFragment>);
