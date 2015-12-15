@@ -2,7 +2,9 @@
 import React from 'react';
 
 function basicHtmlWrapper(tagName, className, style) {
-  return (attrs, children, transform) => React.createElement(tagName, { className, style }, transform(children));
+  return (attrs, children, transformChildren) =>
+    React.createElement(tagName, { className, style, children: transformChildren(children) })
+  ;
 }
 
 export default {
@@ -10,31 +12,47 @@ export default {
   'i': basicHtmlWrapper('span', 'reactml-i', { fontStyle: 'italic' }),
   'u': basicHtmlWrapper('span', 'reactml-b', { textDecoration: 'underline' }),
   's': basicHtmlWrapper('span', 'reactml-s', { textDecoration: 'line-through' }),
-  'url': ({ target }, children, transform) => {
+  'link': ({ url }, children, transformChildren) => {
     if(typeof target === 'string') {
-      return <a className='reactml-url' href={target}>{transform(children)}</a>;
+      return React.createElement('a', {
+        className: 'reactml-url',
+        href: url,
+        children: transformChildren(children),
+      });
     }
     if(children.length === 0) {
-      return transform(children);
+      return null;
     }
     const [{ type, data }] = children;
     if(type === 'text') {
-      return <a className='reactml-url' href={data}>{data}</a>;
+      return React.createElement('a', {
+        className: 'reactml-url',
+        href: data,
+        children: data,
+      });
     }
-    return transform(children);
+    return null;
   },
-  'img': ({ source }, children, transform) => {
-    if(typeof target === 'string' && typeof children === 'string') {
-      return <img alt={children} className='reactml-img' src={source} />;
+  'image': ({ url }, children) => {
+    if(typeof url === 'string' && typeof children === 'string') {
+      return React.createElement('img', {
+        alt: children,
+        className: 'reactml-img',
+        src: url,
+      });
     }
     if(children.length === 0) {
-      return transform(children);
+      return null;
     }
     const [{ type, data }] = children;
     if(type === 'text') {
-      return <img alt={data} className='reactml-img' src={data} />;
+      return React.createElement('img', {
+        alt: data,
+        className: 'reactml-img',
+        src: data,
+      });
     }
-    return transform(children);
+    return null;
   },
   'quote': basicHtmlWrapper('blockquote', 'reactml-quote'),
   'code': basicHtmlWrapper('pre', 'reactml-code'),
