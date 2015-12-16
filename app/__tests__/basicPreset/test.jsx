@@ -8,8 +8,9 @@ const { it } = global;
 
 import expectedJsx from './expected';
 import notExpectedJsx from './notExpected';
-import components from '../../presets/basic';
-import compile from '../../compile';
+import ReactML from '../../';
+const compile = ReactML.compile;
+const components = ReactML.presets.basic;
 
 export default () =>
   it('basicPreset', () =>
