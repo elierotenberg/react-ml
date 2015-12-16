@@ -63,7 +63,7 @@ function transformNode(node, components) {
 function wrapParagraphs(source) {
   return source.split('\n').map((line) => {
     if(line.length > 0) {
-      return `<ReactMLParagraph>${line}</ReactMLParagraph>`;
+      return `<ReactMLParagraph>${line.trim()}</ReactMLParagraph>`;
     }
     return '';
   }).join('');

@@ -3,7 +3,7 @@ import index from '../';
 import ComplexClass from './fixtures/ComplexClass';
 const { describe, it } = global;
 import bareHtml from './bareHtml/test';
-import basicPreset from './bareHtml/test';
+import basicPreset from './basicPreset/test';
 
 describe('sanity', () => {
   it('shouldjs should not extend Object.prototype', () => should(Object.prototype).not.have.property('should'));
