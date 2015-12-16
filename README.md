@@ -28,7 +28,7 @@ Using `reaml-ml/app/presets/basic`, the following text:
 
 ```
 <b>Hello</b>
-<i>World</i>
+<i>World</i><script>alert("I'm evil")</script>
 <link>github.com</link>
 <image url='https://news.ycombinator.com/y18.gif'>HN</image>
 ```

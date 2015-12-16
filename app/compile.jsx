@@ -57,7 +57,7 @@ function transformNode(node, components) {
   if(type === CHEERIO.TEXT && typeof data === 'string') {
     return data;
   }
-  throw new TypeError(`Invalid node: ${node.toString()}`);
+  return null;
 }
 
 function wrapParagraphs(source) {
