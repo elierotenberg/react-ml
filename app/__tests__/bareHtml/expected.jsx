@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactMLFragment from '../../ReactMLFragment';
-import ReactMLParagraph from '../../ReactMLParagraph';
+import ReactMLFragment from '../../components/ReactMLFragment';
+import ReactMLParagraph from '../../components/ReactMLParagraph';
 
 export default (<ReactMLFragment>
   <ReactMLParagraph>

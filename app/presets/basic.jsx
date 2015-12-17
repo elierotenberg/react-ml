@@ -2,52 +2,74 @@
 import _ from 'lodash';
 import React from 'react';
 
-function basicHtmlWrapper(tagName, className, style) {
-  return (attrs, children, transformChildren) =>
-    React.createElement(tagName, { className, style, children: transformChildren(children) })
-  ;
-}
+import ReactMLBold from '../components/ReactMLBold';
+import ReactMLCode from '../components/ReactMLCode';
+import ReactMLImage from '../components/ReactMLImage';
+import ReactMLItalic from '../components/ReactMLItalic';
+import ReactMLItem from '../components/ReactMLItem';
+import ReactMLLink from '../components/ReactMLLink';
+import ReactMLList from '../components/ReactMLList';
+import ReactMLQuote from '../components/ReactMLQuote';
+import ReactMLStrikethrough from '../components/ReactMLStrikethrough';
+import ReactMLUnderline from '../components/ReactMLUnderline';
 
 export default {
-  'b': basicHtmlWrapper('span', 'reactml-b', { fontWeight: 'bold' }),
-  'i': basicHtmlWrapper('span', 'reactml-i', { fontStyle: 'italic' }),
-  'u': basicHtmlWrapper('span', 'reactml-b', { textDecoration: 'underline' }),
-  's': basicHtmlWrapper('span', 'reactml-s', { textDecoration: 'line-through' }),
-  'link': ({ url }, children, transformChildren) => {
-    if(typeof url === 'string') {
-      return <a className='reactml-link' href={url}>
-        {transformChildren(children)}
-      </a>;
-    }
-    if(children.length === 0) {
-      return null;
-    }
-    const [{ type, data }] = children;
-    if(type === 'text') {
-      return <a className='reactml-link' href={data}>
-        {data}
-      </a>;
-    }
-    return null;
-  },
+  'b': (attribs, children, transformChildren) =>
+    <ReactMLBold>{transformChildren(children)}</ReactMLBold>,
+
+  'code': (attribs, children, transformChildren) =>
+    <ReactMLCode>{transformChildren(children)}</ReactMLCode>,
+
+  'i': (attribs, children, transformChildren) =>
+    <ReactMLItalic>{transformChildren(children)}</ReactMLItalic>,
+
   'image': ({ url }, children) => {
     if(typeof url === 'string') {
       if(_.every(children, ({ type }) => type === 'text')) {
-        return <img alt={children.map(({ data }) => data).join('')} className='reactml-image' src={url} />;
+        return <ReactMLImage label={children.map(({ data }) => data).join('')} url={url} />;
       }
-      return <img alt={url} className='reactml-image' src={url} />;
+      return <ReactMLImage label={url} url={url} />;
     }
     if(children.length === 0) {
       return null;
     }
     const [{ type, data }] = children;
     if(type === 'text') {
-      return <img alt={data} className='reactml-image' src={data} />;
+      return <ReactMLImage label={data} url={data} />;
     }
     return null;
   },
-  'quote': basicHtmlWrapper('blockquote', 'reactml-quote'),
-  'code': basicHtmlWrapper('pre', 'reactml-code'),
-  'list': basicHtmlWrapper('ul', 'reactml-list'),
-  'item': basicHtmlWrapper('li', 'reactml-item'),
+
+  'item': (attribs, children, transformChildren) =>
+    <ReactMLItem>{transformChildren(children)}</ReactMLItem>,
+
+  'link': ({ url }, children, transformChildren) => {
+    if(typeof url === 'string') {
+      return <ReactMLLink url={url}>
+        {transformChildren(children)}
+      </ReactMLLink>;
+    }
+    if(children.length === 0) {
+      return null;
+    }
+    const [{ type, data }] = children;
+    if(type === 'text') {
+      return <ReactMLLink url={data}>
+        {data}
+      </ReactMLLink>;
+    }
+    return null;
+  },
+
+  'list': (attribs, children, transformChildren) =>
+    <ReactMLList>{transformChildren(children)}</ReactMLList>,
+
+  'quote': (attribs, children, transformChildren) =>
+    <ReactMLQuote>{transformChildren(children)}</ReactMLQuote>,
+
+  's': (attribs, children, transformChildren) =>
+    <ReactMLStrikethrough>{transformChildren(children)}</ReactMLStrikethrough>,
+
+  'u': (attribs, children, transformChildren) =>
+    <ReactMLUnderline>{transformChildren(children)}</ReactMLUnderline>,
 };

@@ -2,8 +2,8 @@
 import _ from 'lodash';
 import cheerio from 'cheerio';
 import React from 'react';
-import ReactMLFragment from './ReactMLFragment';
-import ReactMLParagraph from './ReactMLParagraph';
+import ReactMLFragment from './components/ReactMLFragment';
+import ReactMLParagraph from './components/ReactMLParagraph';
 
 const CHEERIO = {
   TEXT: 'text',

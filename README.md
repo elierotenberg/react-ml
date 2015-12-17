@@ -28,8 +28,10 @@ Using `reaml-ml/app/presets/basic`, the following text:
 
 ```
 <b>Hello</b>
+<div>Mess with DOM</div>
 <i>World</i><script>alert("I'm evil")</script>
 <link>github.com</link>
+<iframe src='http://evil.me/evil.js'></iframe>
 <image url='https://news.ycombinator.com/y18.gif'>HN</image>
 ```
 
@@ -38,29 +40,27 @@ gets compiled to
 ```jsx
 <ReactMLFragment>
   <ReactMLParagraph>
-    <span className='reactml-b' style={{ fontWeight: 'bold' }}>
+    <ReactMLBold>
       {'Hello'}
-    </span>
+    </ReactMLBold>
   </ReactMLParagraph>
   <ReactMLParagraph>
-    <span className='reactml-i' style={{ fontStyle: 'italic' }}>
+    <ReactMLItalic>
       {'World'}
-    </span>
+    </ReactMLItalic>
   </ReactMLParagraph>
   <ReactMLParagraph>
-    <a className='reactml-link' href='github.com'>
+    <ReactMLLink url={'github.com'}>
       {'github.com'}
-    </a>
+    </ReactMLLink>
   </ReactMLParagraph>
   <ReactMLParagraph>
-    <img alt='HN' className='reactml-image'
-      src={'https://news.ycombinator.com/y18.gif'}
-    />
+    <ReactMLImage label={'HN'} url={'https://news.ycombinator.com/y18.gif'} />
   </ReactMLParagraph>
 </ReactMLFragment>
 ```
 
-which in turned will be rendered using `React.render` to
+which in turn will be rendered using `React.render` to
 
 ```html
 <div class="reactml-fragment">
@@ -78,3 +78,43 @@ which in turned will be rendered using `React.render` to
   </div>
 </div>
 ```
+
+You can of course customize:
+- the existing components from the `basic` layout via CSS or overloading,
+- add or replace components with your own.
+
+### Basic usage
+
+```js
+import ReactML from 'react-ml';
+
+React.render(ReactML.compile('<b>Hello world</b>', ReactML.presets.basic));
+```
+
+### Adding custom components
+
+Components are defined by their tagname (eg. `<image>` has tagname `image`). It is then up to you to define which
+React Element will actually be mapped to your custom component. For example, if we wish to add a `<red>` component that
+will color its children in red, we would do the following:
+
+```js
+compile(source, Object.assign({}, basicPreset, {
+  red: (attribs, children, transformChildren) =>
+    <span style={{ color: 'red' }}>
+      {transformChildren(children)}
+    </span>,
+}));
+```
+
+The signature function for a component definition is:
+
+`(attribs: Object, children: Object, transformChildren: Function): React.Element`
+
+- `attribs` contains the attributes of the current node, eg. `attribs` for `<image bar='foo'>` is `{ bar: 'foo' }`
+- `children` contains the list of the children node,
+- `transformChildren` is a reference to the closured compile function to perform recursive transformation of the
+`children` list.
+
+Each object in children can be destructured as `{ type, data } = child`, where `type` can either be `text`, in which
+case the actual text content is in `data`, or `tag`, in which case `data` and the `children` object should be either
+ignored or passed to `transformChildren`.
