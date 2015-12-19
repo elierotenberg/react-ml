@@ -6,6 +6,7 @@ import ReactMLBold from './components/ReactMLBold';
 import ReactMLCode from './components/ReactMLCode';
 import ReactMLFragment from './components/ReactMLFragment';
 import ReactMLImage from './components/ReactMLImage';
+import ReactMLItalic from './components/ReactMLItalic';
 import ReactMLItem from './components/ReactMLItem';
 import ReactMLLink from './components/ReactMLLink';
 import ReactMLList from './components/ReactMLList';
@@ -21,6 +22,7 @@ export default {
   ReactMLCode,
   ReactMLFragment,
   ReactMLImage,
+  ReactMLItalic,
   ReactMLItem,
   ReactMLLink,
   ReactMLList,
