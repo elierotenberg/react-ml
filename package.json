@@ -1,6 +1,6 @@
 {
   "name": "react-ml",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "React-base, extensible user-facing language (= BBCode/WikiCode for the modern web).",
   "main": "dist/node/prod/app/index.js",
   "browser": "dist/browser/prod/app/index.js",
