@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ReactMLCode extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node,
-  }
+    children: PropTypes.node,
+  };
+
   render() {
     const { children } = this.props;
     return <pre className='reactml-code'>
