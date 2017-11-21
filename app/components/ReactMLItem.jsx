@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ReactMLItem extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node,
-  }
+    children: PropTypes.node,
+  };
+
   render() {
     const { children } = this.props;
     return <li className='reactml-item'>

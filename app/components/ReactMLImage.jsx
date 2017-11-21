@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ReactMLImage extends React.Component {
   static propTypes = {
-    label: React.PropTypes.string,
-    url: React.PropTypes.string,
+    label: PropTypes.string,
+    url: PropTypes.string,
   };
 
   render() {
